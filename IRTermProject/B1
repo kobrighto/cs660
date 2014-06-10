@@ -4867,7 +4867,7 @@ difficult to ascertain whether this was any different than the expected death ra
 surgery.  They conclude that outpatient mortality  is rare. nversely morbidity and mortality for patients undergoing  procedures such as emergency abdominal vascular surgery is very high.  It is not always
 appreciated that mortality for patients with significant cardiac disease is real and not rare .  These figures underscore the  need to assign risk depending on the patients health and proposed surgery . This is not always easy to do but  general principles have evolved and  certain  areas such as patients with coronary artery disease have been studied a great deal in recent years.  When attempts are
 made to separate out the various causes of mortality and morbidity generally patient problems are the most important, followed by surgical problems, and  then anaesthesia problems.  Cohen et al  (8) 
-and others have shown that “patient related preoperative characteristics such as <A HREF="http://www.bconnex.net/~jascah/asaclass.html">ASA Physical Status</A> , age,  sex, emergency surgery, and major surgery”  are significant predictors  of mortality.  For
+and others have shown that ï¿½patient related preoperative characteristics such as <A HREF="http://www.bconnex.net/~jascah/asaclass.html">ASA Physical Status</A> , age,  sex, emergency surgery, and major surgeryï¿½  are significant predictors  of mortality.  For
 a <A HREF="http://www.bconnex.net/~jascah/asaclass.html">ASA Class IV</A> patient the death rate approaches 76 per 1000(8).  The presence of significant medical disease is a much greater predictor of problems than the type of surgery  or anaesthesia to the point that it
 seems  anaesthetic  related factors  are  almost inconsequential  compared to patient and surgical factors.  To understand risk assessment an understanding of statistics and probability is helpful since the significance of assessments and testing done to assign risk depends very much on the prior probability of disease in the patient (see the chapter on statistics in this <A HREF="http://www.usyd.edu.au/su/anaes/VAT/VAT.html">textbook</A>).   When one looks at strictly anaesthetic problems that lead to morbidity and mortality , airway problems and failure to provide adequate ventilation leading to hypoxia become important. Fortunately  the number of critical  incidents involving anaesthetics alone appear to be decreasing in recent years possibly due to
 continuous oxygen saturation monitoring and end-tidal C02 monitoring but this is unlikely to have a major affect on mortality since anaesthetic critical incidents cause only a small part of  perioperative mortality.
@@ -14835,8 +14835,8 @@ mechanisms at run-time.&quot; <I>[from the abstract of this Internet Draft]</I><
 These lists should be used solely for specific discussions of standards activities. 
 The <B>General HTML discussion list</B> (<B><CODE>www-html</CODE></B>) hosted by the <A HREF="#7">World Wide Web Consortium</A> (W3C), as well as the <A HREF="news:comp.www.infosystems.*"><B><CODE>comp.www.infosystems.*</CODE></B> newsgroups, are more appropriate for general HTML discussions.</P>
 <P>The <A HREF="#7">World Wide Web Consortium</A> has a list of Web related lists at: <A HREF="http://www.w3.org/pub/WWW/Mail/"><CODE>http://www.w3.org/pub/WWW/Mail/</CODE></A>.</P>
-<P>When you subscribe to any of these lists, you’ll receive an acknowledgment message with information on how to unsubscribe, as well as other options (such as digest) which you might find useful. 
-Be sure to save this message in a "safe" place, as you’ll need if you later want to get off of the list.</P>
+<P>When you subscribe to any of these lists, youï¿½ll receive an acknowledgment message with information on how to unsubscribe, as well as other options (such as digest) which you might find useful. 
+Be sure to save this message in a "safe" place, as youï¿½ll need if you later want to get off of the list.</P>
 <H3><A NAME="ml-www-html">General HTML Discussion Mailing List</A></H3>
 <BLOCKQUOTE><TABLE>
 <TR><TD>To: <TD><A HREF="mailto:www-html-request@w3.org"><B><CODE>www-html-request@w3.org</CODE></B></A><BR>
@@ -19765,30 +19765,30 @@ ACTION=http://www.cdn.co.uk/carnet/cgi-bin/allmods.pl>
 
 <Select name ="keys" Size="8">
 
-<Option value="CATEGORYA">UP TO £ 6999
-<Option value="CATEGORYB"> £ 7000 - £ 7999
-<Option value="CATEGORYC"> £ 8000 - £ 8999
-<Option value="CATEGORYD"> £ 9000 - £ 9999
-<Option value="CATEGORYE"> £10000 - £10999
-<Option value="CATEGORYF"> £11000 - £11999
-<Option value="CATEGORYG"> £12000 - £12999
-<Option value="CATEGORYH"> £13000 - £13999
-<Option value="CATEGORYI"> £14000 - £14999
-<Option value="CATEGORYJ"> £15000 - £15999
-<Option value="CATEGORYK"> £16000 - £16999
-<Option value="CATEGORYL"> £17000 - £17999
-<Option value="CATEGORYM"> £18000 - £18999
-<Option value="CATEGORYN"> £19000 - £19999
-<Option value="CATEGORYO"> £20000 - £20999
-<Option value="CATEGORYP"> £21000 - £21999
-<Option value="CATEGORYQ"> £22000 - £22999
-<Option value="CATEGORYR"> £23000 - £23999
-<Option value="CATEGORYS"> £24000 - £24999
-<Option value="CATEGORYT"> £25000 - £26999
-<Option value="CATEGORYU"> £27000 - £29999
-<Option value="CATEGORYV"> £30000 - £39999
-<Option value="CATEGORYW"> £40000 - £59999
-<Option value="CATEGORYX"> £60000 AND OVER
+<Option value="CATEGORYA">UP TO ï¿½ 6999
+<Option value="CATEGORYB"> ï¿½ 7000 - ï¿½ 7999
+<Option value="CATEGORYC"> ï¿½ 8000 - ï¿½ 8999
+<Option value="CATEGORYD"> ï¿½ 9000 - ï¿½ 9999
+<Option value="CATEGORYE"> ï¿½10000 - ï¿½10999
+<Option value="CATEGORYF"> ï¿½11000 - ï¿½11999
+<Option value="CATEGORYG"> ï¿½12000 - ï¿½12999
+<Option value="CATEGORYH"> ï¿½13000 - ï¿½13999
+<Option value="CATEGORYI"> ï¿½14000 - ï¿½14999
+<Option value="CATEGORYJ"> ï¿½15000 - ï¿½15999
+<Option value="CATEGORYK"> ï¿½16000 - ï¿½16999
+<Option value="CATEGORYL"> ï¿½17000 - ï¿½17999
+<Option value="CATEGORYM"> ï¿½18000 - ï¿½18999
+<Option value="CATEGORYN"> ï¿½19000 - ï¿½19999
+<Option value="CATEGORYO"> ï¿½20000 - ï¿½20999
+<Option value="CATEGORYP"> ï¿½21000 - ï¿½21999
+<Option value="CATEGORYQ"> ï¿½22000 - ï¿½22999
+<Option value="CATEGORYR"> ï¿½23000 - ï¿½23999
+<Option value="CATEGORYS"> ï¿½24000 - ï¿½24999
+<Option value="CATEGORYT"> ï¿½25000 - ï¿½26999
+<Option value="CATEGORYU"> ï¿½27000 - ï¿½29999
+<Option value="CATEGORYV"> ï¿½30000 - ï¿½39999
+<Option value="CATEGORYW"> ï¿½40000 - ï¿½59999
+<Option value="CATEGORYX"> ï¿½60000 AND OVER
 </select>
 <TR>
 <TH COLSPAN=2>
@@ -22045,7 +22045,7 @@ Content-Length: 2063
 	<FONT SIZE=1>
 	Web site design by:
 	<BR> 
-	copyright©1995 & 1996 by
+	copyrightï¿½1995 & 1996 by
 	<BR>
 	Sun Publications
 	</FONT>
@@ -30114,3 +30114,4 @@ Frankly, we as Canadians are fortunate to have the United States as our neighbou
 <A HREF="/olifdex.html">OLIFI</A> | <A HREF="/tourdex.html">Tourism</A> | <A HREF="/evendex.html">Coming Events</A> | <A HREF="/index-e.html">Main Index</A></FONT></CENTER>
 </BODY>
 </HTML>
+</DOC>
