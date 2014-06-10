@@ -1,0 +1,315 @@
+<top>
+
+<num> Number: 452 
+<title> do beavers live in salt water 
+
+<desc> Description: 
+Describe the normal habitat for beavers; note
+exceptions, if any.
+
+<narr> Narrative: 
+Relevant documents describe the habitat range 
+as well as references to specific areas and 
+bodies of water.
+
+</top>
+
+<top>
+
+<num> Number: 453 
+<title> hunger 
+
+<desc> Description: 
+Find documents that discuss organizations/groups
+that are aiding in the eradication of the worldwide
+hunger problem.
+
+<narr> Narrative: 
+Relevant documents contain the name of any 
+organization or group that is attempting to
+relieve the hunger problem in the world.  
+Documents that address the problem only without
+providing names of organizations/groups that
+are working on hunger are irrelevant.
+
+</top>
+
+<top>
+
+<num> Number: 454 
+<title> parkinson's disease 
+
+<desc> Description: 
+What are the symptoms and treatment of
+Parkinson's Disease, and what segments
+of the population have this disease?
+
+<narr> Narrative: 
+Documents discussing research projects
+and funding for research projects were
+considered relevant only when clinical
+trials were included.  Documents
+regarding legislation which discussed
+funding and programs were considered
+irrelevant. 
+ 
+</top>
+
+<top>
+
+<num> Number: 455 
+<title> whan did Jackie Robinson appear at his first game 
+
+<desc> Description: 
+Find documents that indicate when Jackie Robinson made 
+his major league debut.
+
+<narr> Narrative: 
+A relevant document must contain the year that Jackie
+Robinson broke into major league baseball.
+
+</top>
+
+<top>
+
+<num> Number: 457 
+<title> CHEVROLET TRUCKS 
+
+<desc> Description: 
+Find documents that address the types of Chevrolet 
+trucks available.
+
+<narr> Narrative: 
+Relevant documents must contain information such as:
+the length, weight, cargo size, wheelbase, horsepower, 
+cost, etc.
+
+</top>
+
+<top>
+
+<num> Number: 458 
+<title> fasting 
+
+<desc> Description: 
+Find documents that discuss fasting for religious reasons.
+
+<narr> Narrative: 
+A relevant document discusses fasting as related to 
+periods of religious significance.  Relevant documents 
+should state the reason for fasting and the benefits to
+be derived.   
+
+</top>
+
+<top>
+
+<num> Number: 460 
+<title> Who was Moses? 
+
+<desc> Description: 
+Find documents that discuss the biblical figure
+of Moses.
+
+<narr> Narrative: 
+A relevant document includes any information 
+concerning Moses and his deeds regarding the 
+Israelites.
+
+</top>
+
+<top>
+
+<num> Number: 462 
+<title> real estate and new jersey 
+
+<desc> Description: 
+Find documents that contain residential 
+real estate listings within New Jersey.
+
+<narr> Narrative: 
+Documents containing realtor data such
+as point of contact, address, web site
+or email address are considered as a 
+real estate listing are are relevant. 
+Listings of commercial real estate for
+sale or auction are not relevant.
+
+</top>
+
+<top>
+
+<num> Number: 463 
+<title> tartin 
+
+<desc> Description: 
+Find information on Scottish tartans:
+their history, current use, how they
+are made, and how to wear them.
+
+<narr> Narrative: 
+Simple listings of clan tartan names or 
+price lists are not relevant.  Pictures 
+or descriptions of individual plaids are 
+not relevant unless accompanied by history
+of their development.
+
+</top>
+
+<top>
+
+<num> Number: 525
+<title> how does water get into the atmosphere?
+
+<desc> Description:
+How does water enter the earth's atmosphere?
+
+<narr> Narrative:
+A relevant document will explain the meteorological process whereby
+the earth's atmosphere becomes impregnated with water.
+
+</top>
+
+<top>
+
+<num> Number: 526
+<title> bmi
+
+<desc> Description:
+What does BMI stand for?
+
+<narr> Narrative:
+Any document that gives defines or explains BMI is relevant.
+
+</top>        
+
+<top>
+
+<num> Number: 527
+<title> can you info on booker t. washington?
+
+<desc> Description:
+What biographical data is available on Booker T. Washington?
+
+<narr> Narrative:
+A relevant document will provide biographical information
+on Booker T. Washington.
+
+</top>
+
+<top>
+
+<num> Number: 529
+<title> history on cambodia? 
+
+<desc> Description:
+Find accounts of the history of Cambodia.
+
+<narr> Narrative:
+A relevant document will provide historical information on Cambodia.
+Current events in Cambodia are not relevant.
+
+</top>   
+
+<top>
+
+<num> Number: 530
+<title> do pheromone scents work?   
+
+<desc> Description:
+What is the scientific evidence that suggests pheromones stimulate
+the opposite sex?
+
+<narr> Narrative:
+A relevant document will discuss how pheromones act as an attractor
+or repellent among humans, other animals, or plants.
+
+</top>
+
+<top>
+
+<num> Number: 531
+<title> who and whom
+
+<desc> Description:
+What is the proper grammatical use of "who" versus "whom"?.
+
+<narr> Narrative:
+A relevant document will provide explicit guidance for
+the proper grammatical use of "who" and "whom".
+
+</top>   
+
+<top>
+
+<num> Number: 532
+<title> hypnosis?
+
+<desc> Description:
+Find documents that describe the uses of hypnosis, and report
+on how effective hypnosis is.
+
+<narr> Narrative:
+A relevant document will describe a medical social use of
+hypnosis and its effectiveness in addressing the problem.
+The use of hypnosis as entertainment is not relevant.
+
+</top>
+
+<top>
+
+<num> Number: 533
+<title> school uniforms in public schools?  
+
+<desc> Description:
+Find documents either pro or con regarding children wearing
+uniforms in public schools.
+
+<narr> Narrative:
+A relevant document will contain an argument for or against
+requiring students to wear uniforms in public schools.
+Advertisements for uniforms and simple statements that
+particular school districts require uniforms are not relevant.
+
+</top>
+
+<top>
+
+<num> Number: 536
+<title> can babies eat honey?
+
+<desc> Description:
+Would eating honey affect the health of a baby?
+
+<narr> Narrative:
+A relevant document will provide evidence as to whether it is
+safe to feed a human baby honey.
+
+</top>   
+
+<top>
+
+<num> Number: 537
+<title> are sun beds safe
+
+<desc> Description:
+Are sun beds detrimental to the health of an individual?
+
+<narr> Narrative:
+A relevant document will identify negative health effects of 
+sun (tanning) beds. 
+
+</top>
+
+<top>
+
+<num> Number: 539
+<title> authors who suffered from depression 
+
+<desc> Description:
+Which authors suffered from depression?
+
+<narr> Narrative:
+A relevant document will name authors who were depressed.
+
+</top>

@@ -1,5 +1,3 @@
-/_5.cfe
-/_5.cfs
-/_5.si
-/segments_6
-/segments.gen
+*
+# Dont ignore this file
+!/write.lock

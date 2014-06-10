@@ -1,0 +1,7 @@
+# See QueryExpansion.java CONSTANTS section for details
+QE.method = rocchio
+QE.decay = 0.04
+QE.doc.num = 5
+QE.term.num = 9
+rocchio.alpha = 1
+rocchio.beta = 0.75
