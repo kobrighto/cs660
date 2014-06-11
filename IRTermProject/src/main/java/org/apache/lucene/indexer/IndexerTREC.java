@@ -70,12 +70,13 @@ public class IndexerTREC {
 				
 				String content = "";
 				while (!(line = in.readLine()).equals("</DOC>")) {
-					content += line + "\n";
+					content += line + " ";
 				}
-				doc.add(new TextField("content", content.substring(0, content.length()-2), Field.Store.YES));
+				doc.add(new TextField("contents", content, Field.Store.NO));
 				
 				if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
 		            System.out.println("adding " + docnum);
+		            //System.out.println(doc);
 		            writer.addDocument(doc);
 		          } else {
 		            System.out.println("updating " + docnum);
@@ -83,6 +84,7 @@ public class IndexerTREC {
 		          }
 			}
 		}
+		
 		in.close();
 	}
 }
