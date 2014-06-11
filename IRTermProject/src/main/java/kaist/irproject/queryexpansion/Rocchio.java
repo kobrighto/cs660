@@ -2,6 +2,11 @@ package kaist.irproject.queryexpansion;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Set;
+import java.util.HashMap;
+import java.util.TreeMap;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -11,42 +16,55 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.similarities.Normalization.NoNormalization;
 
 public class Rocchio {
-	public BooleanQuery RocchioQueryExpander(ArrayList<String> query, ScoreDoc[] relDocs, 
+	public static BooleanQuery RocchioQueryExpander(Query query, ScoreDoc[] relDocs, 
 			ScoreDoc[] nonRelDocs, float alpha, float beta, float gamma, Analyzer analyzer, 
 			IndexSearcher searcher) throws IOException {
 		int Dr = relDocs.length; // number of relevant docs
-		int Dnr = nonRelDocs.length; // number of NON relevant docs
+		int Dnr = 1; if(nonRelDocs != null) Dnr = nonRelDocs.length; // number of NON relevant docs
 		
-		ArrayList<String> terms = new ArrayList<String>(query);
+		String[] queryTerms = query.toString().split(" ");
 		
-		ArrayList<Float> boosts = new ArrayList<Float>();
+		HashMap<String, Float> terms = new HashMap<String, Float>();
+		
 		for(int i = 0; i < terms.size(); i++) {
-			boosts.add(alpha);
+			terms.put(queryTerms[i], new Float(alpha));
 		}
 		
-		updateBoosts(relDocs, beta, analyzer, searcher, Dr, terms, boosts);
-		updateBoosts(nonRelDocs, -gamma, analyzer, searcher, Dnr, terms, boosts);
+		updateBoosts(relDocs, beta, analyzer, searcher, Dr, terms);
+		updateBoosts(nonRelDocs, -gamma, analyzer, searcher, Dnr, terms);
 		
+		
+		ValueComparator bvc =  new ValueComparator(terms);
+        TreeMap<String,Float> sorted_map = new TreeMap<String,Float>(bvc);
+        sorted_map.putAll(terms);
+        
 		BooleanQuery Query = new BooleanQuery();
+		System.out.println(terms.size());
 		
-		for(int idx = 0; idx < terms.size(); idx++){
-			TermQuery tq = new TermQuery(new Term("text", terms.get(idx)));
-			tq.setBoost(boosts.get(idx));
+		int count = 0;
+		for(Map.Entry<String, Float> term : sorted_map.entrySet()){
+			System.out.println(term.getKey() + " " + term.getValue());
+			TermQuery tq = new TermQuery(new Term("text", term.getKey()));
+			tq.setBoost(term.getValue());
 			Query.add(tq, Occur.SHOULD);
+			count++; if(count == 1023) break;
 		}
 		
 		return Query;
 	}
 
-	private void updateBoosts(ScoreDoc[] Docs, Float param,
+	private static void updateBoosts(ScoreDoc[] docs, Float param,
 			Analyzer analyzer, IndexSearcher searcher, int docCount,
-			ArrayList<String> terms, ArrayList<Float> boosts)
+			HashMap<String, Float> terms)
 			throws IOException {
-		for(ScoreDoc hit:Docs){
+		if(docs == null) return;
+		for(ScoreDoc hit:docs){
 			Document doc = searcher.doc(hit.doc);
 		    
 		    TokenStream tokenStream = analyzer.tokenStream("contents", doc.get("contents"));
@@ -55,14 +73,30 @@ public class Rocchio {
 		    tokenStream.reset();
 		    while (tokenStream.incrementToken()) {
 		        String term = charTermAttribute.toString();
-		        int idx = terms.indexOf(term);
-		        if(idx > -1){
-		        	boosts.set(idx, boosts.get(idx)+ param/docCount);
+		        if(terms.containsKey(term)){
+		        	terms.put(term, terms.get(term) + param/docCount);
 		        } else {
-		        	terms.add(term);
-		        	boosts.add(param/docCount);
+		        	terms.put(term, new Float(param/docCount));
 		        }
 		    }
+		    tokenStream.end();
+		    tokenStream.close();
 		}
 	}
+}
+
+class ValueComparator implements Comparator<String> {
+
+    Map<String, Float> base;
+    public ValueComparator(Map<String, Float> base) {
+        this.base = base;
+    }
+    
+    public int compare(String a, String b) {
+        if (Math.abs(base.get(a)) >= Math.abs(base.get(b))) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
 }
