@@ -7,9 +7,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -63,7 +61,8 @@ public class SearchTRECTest {
 	        }
 	                  
 	      }
-	    
+	    Document doc = searcher.doc(hits[0].doc);
+	    System.out.println(doc.getField("contents"));
 	    Query expandedQuery = Rocchio.RocchioQueryExpander(query, hits, null, (float) 1, (float) 0.5, (float) 0.5, analyzer, searcher);
 	    System.out.println(expandedQuery);
 	}

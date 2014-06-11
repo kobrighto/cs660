@@ -24,6 +24,7 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
+import org.jsoup.Jsoup;
 
 public class IndexerTREC {
 	public static void main(String args[]) throws IOException {
@@ -57,7 +58,6 @@ public class IndexerTREC {
 		Reader decoder = new InputStreamReader(gzipStream, StandardCharsets.UTF_8);
 		BufferedReader in = new BufferedReader(decoder);
 		
-		// BufferedReader in = new BufferedReader(new FileReader(docCollection));
 		String line;
 		
 		while ((line = in.readLine()) != null){
@@ -72,6 +72,9 @@ public class IndexerTREC {
 				while (!(line = in.readLine()).equals("</DOC>")) {
 					content += line + " ";
 				}
+				
+				content = Jsoup.parse(content).text();
+				
 				doc.add(new TextField("contents", content, Field.Store.YES));
 				
 				if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {

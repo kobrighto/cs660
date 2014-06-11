@@ -49,7 +49,7 @@ public class Rocchio {
 		
 		int count = 0;
 		for(Map.Entry<String, Float> term : sorted_map.entrySet()){
-			System.out.println(term.getKey() + " " + term.getValue());
+			// System.out.println(term.getKey() + " " + term.getValue());
 			TermQuery tq = new TermQuery(new Term("text", term.getKey()));
 			tq.setBoost(term.getValue());
 			Query.add(tq, Occur.SHOULD);
