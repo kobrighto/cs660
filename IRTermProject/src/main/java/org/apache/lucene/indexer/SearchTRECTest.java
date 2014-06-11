@@ -20,6 +20,8 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+import kaist.irproject.queryexpansion.Rocchio;
+
 public class SearchTRECTest {
 	public static void main(String args[]) throws IOException, ParseException {
 		String index = "Index_TREC";
@@ -59,5 +61,9 @@ public class SearchTRECTest {
 	        }
 	                  
 	      }
+	    Document doc = searcher.doc(hits[0].doc);
+	    System.out.println(doc.getField("contents"));
+	    Query expandedQuery = Rocchio.RocchioQueryExpander(query, hits, null, (float) 1, (float) 0.5, (float) 0.5, analyzer, searcher);
+	    System.out.println(expandedQuery);
 	}
 }
