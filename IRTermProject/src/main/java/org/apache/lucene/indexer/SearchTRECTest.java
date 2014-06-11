@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -59,5 +61,15 @@ public class SearchTRECTest {
 	        }
 	                  
 	      }
+	    
+	    Document doc = searcher.doc(hits[0].doc);
+	    
+	    TokenStream tokenStream = analyzer.tokenStream("contents", doc.get("contents"));
+	    CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
+
+	    tokenStream.reset();
+	    while (tokenStream.incrementToken()) {
+	        System.out.println(charTermAttribute.toString());
+	    }
 	}
 }
