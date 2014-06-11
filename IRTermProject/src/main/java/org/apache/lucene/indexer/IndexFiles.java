@@ -24,12 +24,20 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
+import org.apache.lucene.index.Fields;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.MultiFields;
+import org.apache.lucene.index.SlowCompositeReaderWrapper;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.index.Terms;
+import org.apache.lucene.index.TermsEnum;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.util.BytesRef;
 import org.apache.lucene.util.Version;
 
 import java.io.BufferedReader;
@@ -40,6 +48,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Iterator;
 
 /** Index all text files under a directory.
  * <p>
@@ -112,7 +121,7 @@ public class IndexFiles {
 
       IndexWriter writer = new IndexWriter(dir, iwc);
       indexDocs(writer, docDir);
-
+      
       // NOTE: if you want to maximize search performance,
       // you can optionally call forceMerge here.  This can be
       // a terribly costly operation, so generally it's only
@@ -122,6 +131,7 @@ public class IndexFiles {
       // writer.forceMerge(1);
 
       writer.close();
+     
 
       Date end = new Date();
       System.out.println(end.getTime() - start.getTime() + " total milliseconds");

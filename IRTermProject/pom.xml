@@ -57,5 +57,10 @@
 	    	<artifactId>lucene-core</artifactId>
 	    	<version>4.8.1</version>
 	    </dependency>
+	    <dependency>
+	    	<groupId>pitt.search</groupId>
+	    	<artifactId>semanticvectors</artifactId>
+	    	<version>5.4</version>
+	    </dependency>
   </dependencies>
 </project>
