@@ -15,7 +15,9 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 
 public class Rocchio {
-	public BooleanQuery RocchioQueryExpander(ArrayList<String> query, ScoreDoc[] relDocs, ScoreDoc[] nonRelDocs, float alpha, float beta, float gamma, Analyzer analyzer, IndexSearcher searcher) throws IOException {
+	public BooleanQuery RocchioQueryExpander(ArrayList<String> query, ScoreDoc[] relDocs, 
+			ScoreDoc[] nonRelDocs, float alpha, float beta, float gamma, Analyzer analyzer, 
+			IndexSearcher searcher) throws IOException {
 		int Dr = relDocs.length; // number of relevant docs
 		int Dnr = nonRelDocs.length; // number of NON relevant docs
 		
