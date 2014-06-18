@@ -61,8 +61,6 @@ public class SearchTRECTest {
 	        }
 	                  
 	      }
-	    Document doc = searcher.doc(hits[0].doc);
-	    System.out.println(doc.getField("contents"));
 	    Query expandedQuery = Rocchio.RocchioQueryExpander(query, hits, null, (float) 1, (float) 0.5, (float) 0.5, analyzer, searcher);
 	    System.out.println(expandedQuery);
 	    
@@ -74,6 +72,7 @@ public class SearchTRECTest {
 	    System.out.println(numTotalHits + " total matching documents");
 	    start = 0;
 	    end = Math.min(numTotalHits, 5);
+	    Document doc;
 	    
 	    for (int i = start; i < end; i++) {
 

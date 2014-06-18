@@ -46,7 +46,6 @@ public class Rocchio {
         sorted_map.putAll(terms);
         
 		BooleanQuery Query = new BooleanQuery();
-		System.out.println(terms.size());
 		
 		int count = 0;
 		String test = "";
