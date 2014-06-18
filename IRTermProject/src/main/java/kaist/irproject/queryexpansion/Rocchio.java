@@ -1,10 +1,8 @@
 package kaist.irproject.queryexpansion;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Map;
-import java.util.Set;
 import java.util.HashMap;
 import java.util.TreeMap;
 
@@ -19,16 +17,15 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.similarities.Normalization.NoNormalization;
+import org.apache.lucene.util.Version;
+import org.apache.lucene.queryparser.*;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 
 public class Rocchio {
-
-
-
-
-	public static BooleanQuery RocchioQueryExpander(Query query, ScoreDoc[] relDocs, 
+	public static Query RocchioQueryExpander(Query query, ScoreDoc[] relDocs, 
 			ScoreDoc[] nonRelDocs, float alpha, float beta, float gamma, Analyzer analyzer, 
-			IndexSearcher searcher) throws IOException {
+			IndexSearcher searcher) throws IOException, ParseException {
 		int Dr = relDocs.length; // number of relevant docs
 		int Dnr = 1; if(nonRelDocs != null) Dnr = nonRelDocs.length; // number of NON relevant docs
 
@@ -44,7 +41,6 @@ public class Rocchio {
 		updateBoosts(relDocs, beta, analyzer, searcher, Dr, terms);
 		updateBoosts(nonRelDocs, -gamma, analyzer, searcher, Dnr, terms);
 		
-		
 		ValueComparator bvc =  new ValueComparator(terms);
         TreeMap<String,Float> sorted_map = new TreeMap<String,Float>(bvc);
         sorted_map.putAll(terms);
@@ -53,9 +49,10 @@ public class Rocchio {
 		System.out.println(terms.size());
 		
 		int count = 0;
+		String test = "";
 		for(Map.Entry<String, Float> term : sorted_map.entrySet()){
 			// System.out.println(term.getKey() + " " + term.getValue());
-			TermQuery tq = new TermQuery(new Term("text", term.getKey()));
+			TermQuery tq = new TermQuery(new Term("contents", term.getKey()));
 			tq.setBoost(term.getValue());
 			Query.add(tq, Occur.SHOULD);
 			count++; if(count == 1023) break;
@@ -91,7 +88,6 @@ public class Rocchio {
 }
 
 class ValueComparator implements Comparator<String> {
-
     Map<String, Float> base;
     public ValueComparator(Map<String, Float> base) {
         this.base = base;

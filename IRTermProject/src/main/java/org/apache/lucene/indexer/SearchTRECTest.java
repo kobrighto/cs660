@@ -26,7 +26,7 @@ public class SearchTRECTest {
 	public static void main(String args[]) throws IOException, ParseException {
 		String index = "Index_TREC";
 		String field = "contents";
-		
+		 
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(index)));
 	    IndexSearcher searcher = new IndexSearcher(reader);
 	    // :Post-Release-Update-Version.LUCENE_XY:
@@ -65,5 +65,26 @@ public class SearchTRECTest {
 	    System.out.println(doc.getField("contents"));
 	    Query expandedQuery = Rocchio.RocchioQueryExpander(query, hits, null, (float) 1, (float) 0.5, (float) 0.5, analyzer, searcher);
 	    System.out.println(expandedQuery);
+	    
+	    
+	    results = searcher.search(expandedQuery, 5);
+	    hits = results.scoreDocs;
+	    
+	    numTotalHits = results.totalHits;
+	    System.out.println(numTotalHits + " total matching documents");
+	    start = 0;
+	    end = Math.min(numTotalHits, 5);
+	    
+	    for (int i = start; i < end; i++) {
+
+	        doc = searcher.doc(hits[i].doc);
+	        String docnum= doc.get("docnumber");
+	        if (docnum != null) {
+	          System.out.println((i+1) + ". " + docnum);
+	        } else {
+	          System.out.println((i+1) + ". " + "No path for this document");
+	        }
+	                  
+	      }
 	}
 }
