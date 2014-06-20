@@ -42,7 +42,8 @@ public class IndexerTREC {
 	public static void main(String args[]) throws IOException {
 		String INDEXPATH = "Index_TREC";
 		Boolean CREATE = true; 
-		String DOCPATH = "B01.gz";
+		File DATA_DIRECTORY = new File("wt10g");
+		
 		
 		Directory dir = FSDirectory.open(new File(INDEXPATH));
 	    Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48, stopWordsSet);
@@ -58,14 +59,34 @@ public class IndexerTREC {
 	      }
 	    
 	    IndexWriter writer = new IndexWriter(dir, iwc);
-	    indexDoc(writer, DOCPATH);
+	    
+	    
+	    
+	   
+	    System.out.println("Added/updated documents: " + indexDocs(writer, DATA_DIRECTORY));
 	    
 	    writer.close();
 	   
 	}
 
-	private static void indexDoc(IndexWriter writer, String docCollection) throws IOException {
-		InputStream fileStream = new FileInputStream(docCollection);
+	private static int indexDocs(IndexWriter writer, File file) throws IOException {
+		int docCount = 0;
+		if (file.getName().equals("info")) { return 0; }
+		System.out.println(file.getPath());
+		
+		if (file.isDirectory()) {
+			for(String path:file.list()){
+				docCount += indexDocs(writer, new File(file, path));
+			}
+		} else {
+			docCount += indexDoc(writer, file);
+		}
+		
+		return docCount;
+	}
+
+	private static int indexDoc(IndexWriter writer, File docfile) throws IOException {
+		InputStream fileStream = new FileInputStream(docfile);
 		InputStream gzipStream = new GZIPInputStream(fileStream);
 		Reader decoder = new InputStreamReader(gzipStream, StandardCharsets.UTF_8);
 		BufferedReader in = new BufferedReader(decoder);
@@ -108,11 +129,9 @@ public class IndexerTREC {
 				    while (tokenStream.incrementToken()) {
 				        String term = charTermAttribute.toString();
 				        docContent = docContent + " " + term;
-				        System.out.println(term);
 				        
 				        c++;
 				    }
-				    System.out.println("Antal: " + c);
 				    bufferedWriterDocs.write(docContent.substring(1) + "\n");
 				    tokenStream.end();
 				    tokenStream.close();
@@ -128,6 +147,7 @@ public class IndexerTREC {
 		}
 		bufferedWriterDocs.close();
 		in.close();
+		return docCount;
 	}
 	
 	// Better stop words then the default. Used for the analyser.
