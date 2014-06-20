@@ -7,8 +7,18 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.indexer.Searcher;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.util.Version;
+import org.jsoup.parser.Parser;
+
 public class evaluator {
-	public static void main(String args[]) throws FileNotFoundException, IOException {
+	public static void main(String args[]) throws FileNotFoundException, IOException, ParseException {
 		File file = new File("evaluation data");
 		String fileName = file.list().length + " - " + (new Date()).toString();
 		FileWriter extensionFile = new FileWriter("evaluation data/"+fileName + " - extension");
@@ -17,17 +27,29 @@ public class evaluator {
 		setRows(luceneFile);
 		
 		Topic[] topics = (new TopicHandler()).getTopics();
+		Searcher searchEngine = new Searcher();
 		
-		List<String> retrievedDocs = null; // INITIALIZE THIS
+		ScoreDoc[] retrievedDocs; // INITIALIZE THIS
 		for (Topic topic:topics){
-			// retrievedDocs = search(topic.getQuery();
-			computeAnalysis(luceneFile, topic, retrievedDocs);
-			// retrievedDocs = expandQuery();
-			computeAnalysis(extensionFile, topic, retrievedDocs);
+			Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48);
+			QueryParser parser = new QueryParser(Version.LUCENE_48, "contents", analyzer);
+			Query query = parser.parse(topic.getQuery().trim());
+			retrievedDocs = Searcher.search(query);
+			computeAnalysis(luceneFile, topic, searchEngine.toStringList(retrievedDocs));
+			ScoreDoc[] relDocuments = null;
+			ScoreDoc[] nonRelDocuments = null;
+			choseTopic(retrievedDocs, relDocuments, nonRelDocuments);
+			retrievedDocs = Searcher.expandQuery(query, relDocuments, nonRelDocuments);
+			computeAnalysis(extensionFile, topic, searchEngine.toStringList(retrievedDocs));
 		}
 		
 		luceneFile.close();
 		extensionFile.close();
+		
+	}
+
+	private static void choseTopic(ScoreDoc[] retrievedDocs, ScoreDoc[] relDocuments,
+			ScoreDoc[] nonRelDocuments) {
 		
 	}
 

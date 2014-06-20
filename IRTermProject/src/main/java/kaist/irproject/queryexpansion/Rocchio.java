@@ -17,11 +17,14 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.util.Version;
-import org.apache.lucene.queryparser.*;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 
+/**
+ * @author Emil Bunk
+ * 
+ * Query expansion class using Rocchio's Algorithm.
+ * Utilizing Lucene boosted boolean query as a replacement of the vector space model.
+ */
 public class Rocchio {
 	public static Query RocchioQueryExpander(Query query, ScoreDoc[] relDocs, 
 			ScoreDoc[] nonRelDocs, float alpha, float beta, float gamma, Analyzer analyzer, 
@@ -48,7 +51,6 @@ public class Rocchio {
 		BooleanQuery Query = new BooleanQuery();
 		
 		int count = 0;
-		String test = "";
 		for(Map.Entry<String, Float> term : sorted_map.entrySet()){
 			// System.out.println(term.getKey() + " " + term.getValue());
 			TermQuery tq = new TermQuery(new Term("contents", term.getKey()));
