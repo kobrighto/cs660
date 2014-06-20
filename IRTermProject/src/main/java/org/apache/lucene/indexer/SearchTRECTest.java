@@ -30,7 +30,8 @@ public class SearchTRECTest {
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(index)));
 	    IndexSearcher searcher = new IndexSearcher(reader);
 	    // :Post-Release-Update-Version.LUCENE_XY:
-	    Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48);
+	    Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48,
+				IndexerTREC.stopWordsSet);
 	    QueryParser parser = new QueryParser(Version.LUCENE_48, field, analyzer);
 	    BufferedReader in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
 	    System.out.println("Enter query: ");
@@ -41,14 +42,14 @@ public class SearchTRECTest {
 	    
 	    Query query = parser.parse(line);
 	    System.out.println("Searching for: " + query.toString(field));
-	    
-	    TopDocs results = searcher.search(query, 5);
+	    int n = 100;
+	    TopDocs results = searcher.search(query, n);
 	    ScoreDoc[] hits = results.scoreDocs;
 	    
 	    int numTotalHits = results.totalHits;
 	    System.out.println(numTotalHits + " total matching documents");
 	    int start = 0;
-	    int end = Math.min(numTotalHits, 5);
+	    int end = Math.min(numTotalHits, n);
 	    
 	    for (int i = start; i < end; i++) {
 
@@ -61,6 +62,9 @@ public class SearchTRECTest {
 	        }
 	                  
 	      }
+	    LDA lda = new LDA();
+	    lda.saveDocumentsToFile(hits);
+	    lda.LDAModel();
 	    Query expandedQuery = Rocchio.RocchioQueryExpander(query, hits, null, (float) 1, (float) 0.5, (float) 0.5, analyzer, searcher);
 	    System.out.println(expandedQuery);
 	    
