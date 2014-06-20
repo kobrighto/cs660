@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.apache.lucene.analysis.Analyzer;
+
 public class IndexLDATopics {
 	private int topics = 20; // default - loadMetaData overwrites
 	private int ndocs = 262; // default - loadMetaData overwrites
@@ -125,6 +127,9 @@ public class IndexLDATopics {
 		String[] splitTopics = topics.split("\t");
 		//System.out.println(splitTopics.length);
 		return topicWords;
+	}
+	public void syncTopicToIndex(Analyzer analyzer, int[] assignedTopics, String[] topicWordsArray){
+		
 	}
 
 	public static void main(String args[]) throws IOException {
