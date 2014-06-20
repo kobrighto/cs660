@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class TopicHandler {
 		
-		private Topic[] topics;
+		private static Topic[] topics;
 		
 	public TopicHandler() throws FileNotFoundException, IOException{
 		this("topics.txt", "qrels.txt", 50);
@@ -22,12 +22,10 @@ public class TopicHandler {
 
 	private static Topic[] extractTopicData(String filename) throws FileNotFoundException,
 			IOException {
-		System.out.println("hello world");
 		BufferedReader in = new BufferedReader(new FileReader(filename));
 		
 		String line;
 		String topicData = "";
-		Topic[] topics = new Topic[50];
 		int i = 0;
 
 		while ((line = in.readLine()) != null){
@@ -61,12 +59,9 @@ public class TopicHandler {
 		int total = 0;
 		
 		for(Topic topic:topics){
-			System.out.println(topic);
-			System.out.println();
 			
 			total+= topic.getNonRelevantDocs().size()+topic.getRelevantDocs().size();
 		}
-		System.out.println(total);
 	}
 
 	public Topic getTopicByNumber(int topicNumber) {
@@ -80,4 +75,10 @@ public class TopicHandler {
 		Random ran = new Random();
 		return topics[ran.nextInt(topics.length)];
 	}
+	
+	public Topic[] getTopics() {
+		return topics;
+	}
+	
+	
 }

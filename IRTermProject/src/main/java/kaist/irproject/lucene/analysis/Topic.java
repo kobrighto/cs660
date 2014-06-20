@@ -1,14 +1,15 @@
 package kaist.irproject.lucene.analysis;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Topic {
 	private int topicNumber;
 	private String query;
 	private String description;
 	private String narrative;
-	private ArrayList<String> relevantDocs = new ArrayList<String>();
-	private ArrayList<String> nonRelevantDocs = new ArrayList<String>();
+	private List<String> relevantDocs = new ArrayList<String>();
+	private List<String> nonRelevantDocs = new ArrayList<String>();
 	
 	public Topic(String topicData) {
 		int title = topicData.indexOf("<title>");
@@ -21,19 +22,19 @@ public class Topic {
 		narrative = topicData.substring(narr+18);
 	}
 	
-	public void setRelevantDocs(ArrayList<String> docs) {
+	public void setRelevantDocs(List<String> docs) {
 		relevantDocs = docs;
 	}
 	
-	public ArrayList<String> getRelevantDocs() {
+	public List<String> getRelevantDocs() {
 		return relevantDocs;
 	}
 	
-	public void setNonRelevantDocs(ArrayList<String> docs) {
+	public void setNonRelevantDocs(List<String> docs) {
 		nonRelevantDocs = docs;
 	}
 	
-	public ArrayList<String> getNonRelevantDocs() {
+	public List<String> getNonRelevantDocs() {
 		return nonRelevantDocs;
 	}
 	
@@ -72,10 +73,26 @@ public class Topic {
 		}
 	}
 	
-	public ArrayList<String> getRelevanceIntersection(ArrayList<String> docs, int topicNumber){
-		ArrayList<String> relDocs = new ArrayList<String>(docs);
+	public List<String> getRelevanceIntersection(List<String> docs){
+		List<String> relDocs = new ArrayList<String>(docs);
 		relDocs.retainAll(relevantDocs);
 		return relDocs;
+	}
+	
+	public int getRelevantDocCount(List<String> docs) {
+		return getRelevanceIntersection(docs).size();
+	}
+	
+	public List<Boolean> checkRelevance(List<String> docs) {
+		List<Boolean> relevance = new ArrayList<Boolean>();
+		for (String doc:docs) {
+			if(relevantDocs.contains(doc)){
+				relevance.add(true);
+			} else {
+				relevance.add(false);
+			}	
+		}
+		return relevance;
 	}
 	
 }
