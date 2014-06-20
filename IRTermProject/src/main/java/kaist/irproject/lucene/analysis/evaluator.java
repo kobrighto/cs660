@@ -18,7 +18,7 @@ public class evaluator {
 		
 		Topic[] topics = (new TopicHandler()).getTopics();
 		
-		List<String> retrievedDocs;
+		List<String> retrievedDocs = null; // INITIALIZE THIS
 		for (Topic topic:topics){
 			// retrievedDocs = search(topic.getQuery();
 			computeAnalysis(luceneFile, topic, retrievedDocs);
