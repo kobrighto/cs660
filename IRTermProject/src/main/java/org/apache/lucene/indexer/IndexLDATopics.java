@@ -5,14 +5,61 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class IndexLDATopics {
-	private int topics = 0;
+	private int topics = 20; // default - loadMetaData overwrites
+	private int ndocs = 262; // default - loadMetaData overwrites
 
 	public IndexLDATopics() {
-		loadMetaData();
-		if (topics > 0) {
-			loadTopics(topics);
-		}
+		 loadMetaData();
+		
 
+	}
+
+	private int[] assignTopicsToDoc(String[] topics, int ndocs) {
+		BufferedReader br = null;
+		String sCurrentLine;
+		int[] topicsAssigned = new int[ndocs];
+		int docCount = 0;
+		try {
+			br = new BufferedReader(new FileReader("model//model-final.theta"));
+			while ((sCurrentLine = br.readLine()) != null) {
+				// System.out.println(sCurrentLine);
+				String[] currentLineSplit = sCurrentLine.split(" ");
+				float max = 0;
+				int topicNumber = 0;
+				int index = 0;
+				for (String p : currentLineSplit) {
+					try {
+						float parsedP = Float.parseFloat(p);
+						if (parsedP > max) {
+							max = parsedP;
+							index = topicNumber;
+
+						}
+
+					}
+
+					catch (Exception e) {
+						System.out.println("Parsing failed for " + p);
+					}
+					topicNumber++;
+				}
+				//System.out.println(max);
+				topicsAssigned[docCount] = index;
+				docCount++;
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (br != null)
+					br.close();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+
+		}
+		return topicsAssigned;
 	}
 
 	private void loadMetaData() {
@@ -41,7 +88,7 @@ public class IndexLDATopics {
 		}
 	}
 
-	private void loadTopics(int numberOfTopics) {
+	private String[] loadTopics(int numberOfTopics) {
 		BufferedReader br = null;
 		String topics = "";
 		String[] topicWords = new String[numberOfTopics];
@@ -52,16 +99,15 @@ public class IndexLDATopics {
 			br = new BufferedReader(new FileReader("model//model-final.twords"));
 			String currentTopic = "";
 			while ((sCurrentLine = br.readLine()) != null) {
-				System.out.println(sCurrentLine);
-				
-				if (!sCurrentLine.toLowerCase().contains("topic")){
-					topicWords[topicCount-1] += sCurrentLine;
-				}
-				else {
+				//System.out.println(sCurrentLine);
+
+				if (!sCurrentLine.toLowerCase().contains("topic")) {
+					topicWords[topicCount - 1] += sCurrentLine;
+				} else {
 					topicWords[topicCount] = "";
 					topicCount++;
 					currentTopic = "";
-					
+
 				}
 				topics += sCurrentLine;
 			}
@@ -77,10 +123,14 @@ public class IndexLDATopics {
 			}
 		}
 		String[] splitTopics = topics.split("\t");
-		System.out.println(splitTopics.length);
+		//System.out.println(splitTopics.length);
+		return topicWords;
 	}
 
 	public static void main(String args[]) throws IOException {
-		new IndexLDATopics();
+		IndexLDATopics indexLDATopics = new IndexLDATopics();
+		String [] topicWordsArray = indexLDATopics.loadTopics(indexLDATopics.topics);
+		int[] t = indexLDATopics.assignTopicsToDoc(topicWordsArray, indexLDATopics.ndocs);
+		System.out.println(t[0]);
 	}
 }

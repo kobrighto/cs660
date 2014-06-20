@@ -8,9 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-
 import java.util.Arrays;
 import java.util.zip.GZIPInputStream;
 
@@ -30,7 +30,6 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
-
 import org.jsoup.Jsoup;
 
 
@@ -69,8 +68,8 @@ public class IndexerTREC {
 		InputStream gzipStream = new GZIPInputStream(fileStream);
 		Reader decoder = new InputStreamReader(gzipStream, StandardCharsets.UTF_8);
 		BufferedReader in = new BufferedReader(decoder);
-		
-		File file = new File("docs_txt.txt");
+		String docFileName = "docs_txt.txt";
+		File file = new File(docFileName);
 		FileWriter filerWriterDocs = new FileWriter(file.getAbsoluteFile());
 		BufferedWriter bufferedWriterDocs = new BufferedWriter(filerWriterDocs);
 		
@@ -112,7 +111,7 @@ public class IndexerTREC {
 				        
 				        c++;
 				    }
-				    System.out.println("Antal: " + c);
+				    System.out.println("Term count: " + c);
 				    bufferedWriterDocs.write(docContent.substring(1) + "\n");
 				    tokenStream.end();
 				    tokenStream.close();
@@ -127,6 +126,11 @@ public class IndexerTREC {
 			
 		}
 		bufferedWriterDocs.close();
+		RandomAccessFile f = new RandomAccessFile(new File(docFileName), "rw");
+		f.seek(0); // to the beginning
+		String documentCount = Integer.toString(docCount-1) + "\n";
+		f.write(documentCount.getBytes());
+		f.close();
 		in.close();
 	}
 	
