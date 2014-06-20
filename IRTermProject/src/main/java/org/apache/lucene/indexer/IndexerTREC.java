@@ -38,12 +38,12 @@ import org.jsoup.Jsoup;
  * 
  */
 public class IndexerTREC {
+	static String INDEXPATH = "Index_TREC";
+	static Boolean CREATE = true;
+	static File DATA_DIRECTORY = new File("wt10g");
+	
 	public static void main(String args[]) throws IOException {
-		String INDEXPATH = "Index_TREC";
-		Boolean CREATE = true;
-		File DATA_DIRECTORY = new File("wt10g");
-
-		Directory dir = FSDirectory.open(new File(INDEXPATH));
+		
 		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48,
 				stopWordsSet);
 		IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_48,
@@ -57,38 +57,34 @@ public class IndexerTREC {
 			// Add new documents to an existing index:
 			iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
 		}
-
+		
+		Directory dir = FSDirectory.open(new File(INDEXPATH));
 		IndexWriter writer = new IndexWriter(dir, iwc);
-
-		System.out.println("Added/updated documents: "
-				+ indexDocs(writer, DATA_DIRECTORY));
-
+		indexDocs(writer, DATA_DIRECTORY);
 		writer.close();
 
 	}
 
-	private static int indexDocs(IndexWriter writer, File file)
+	private static void indexDocs(IndexWriter writer, File file)
 			throws IOException {
-		int docCount = 0;
+		
 		if (file.getName().equals("info")) {
-			return 0;
+			return;
 		}
 		System.out.println(file.getPath());
 
 		if (file.isDirectory()) {
 			for (String path : file.list()) {
-				docCount += indexDocs(writer, new File(file, path));
+				indexDocs(writer, new File(file, path));
 			}
 		} else if (file.getName().endsWith(".gz")){
-			docCount += indexDoc(writer, file);
-		} else { 
-			return 0;
+			
+			indexDoc(writer, file);
 		}
-
-		return docCount;
+		
 	}
 
-	private static int indexDoc(IndexWriter writer, File docfile)
+	private static void indexDoc(IndexWriter writer, File docfile)
 			throws IOException {
 		InputStream fileStream = new FileInputStream(docfile);
 		InputStream gzipStream = new GZIPInputStream(fileStream);
@@ -103,7 +99,6 @@ public class IndexerTREC {
 		PrintWriter out = new PrintWriter(bufferedWriterDocs);
 
 		String line;
-		int docCount = 1;
 		int intinvalidDocCount = 0;
 		while ((line = in.readLine()) != null) {
 			if (line.equals("<DOC>")) {
@@ -136,7 +131,7 @@ public class IndexerTREC {
 																		// id
 
 				if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
-					System.out.println("adding " + docnum);
+					System.out.println(Integer.toString(docCount) + " - adding " + docnum);
 					// System.out.println(doc);
 					writer.addDocument(doc);
 					TokenStream tokenStream = writer.getAnalyzer().tokenStream(
@@ -181,7 +176,6 @@ public class IndexerTREC {
 		f.write(documentCount.getBytes());
 		f.close();
 		in.close();
-		return docCount;
 	}
 
 	// Better stop words then the default. Used for the analyser.
@@ -205,5 +199,6 @@ public class IndexerTREC {
 			"z" };
 	static CharArraySet stopWordsSet = new CharArraySet(Version.LUCENE_48,
 			Arrays.asList(STOP_WORDS), true);
+	static int docCount;
 
 }
