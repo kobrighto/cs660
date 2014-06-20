@@ -79,8 +79,10 @@ public class IndexerTREC {
 			for (String path : file.list()) {
 				docCount += indexDocs(writer, new File(file, path));
 			}
-		} else {
+		} else if (file.getName().endsWith(".gz")){
 			docCount += indexDoc(writer, file);
+		} else { 
+			return 0;
 		}
 
 		return docCount;
