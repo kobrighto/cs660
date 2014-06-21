@@ -13,7 +13,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -22,52 +21,44 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
 public class Searcher {
-	private static final String FIELD = "contents";
-	static private String INDEX = "Index_TREC";
-	 
-	private IndexReader reader;
-    private static IndexSearcher searcher;
-    private static Analyzer analyzer;
-    private static QueryParser parser;
-    
-    private static ScoreDoc[] retrievedDocuments = null;
-    private static String[] topics = new String[3];
-    private static String topicNumber = "";
-	
+		private static final String FIELD = "contents";
+		private static final String INDEX = "Index_TREC";
+		 
+		private IndexReader reader;
+	    private static IndexSearcher searcher;
+	    private static Analyzer analyzer;
+		
 	public Searcher(String index) throws IOException {
-		IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(index)));
-	    IndexSearcher searcher = new IndexSearcher(reader);
-	    Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48);
-	    QueryParser parser = new QueryParser(Version.LUCENE_48, FIELD, analyzer);
+		reader = DirectoryReader.open(FSDirectory.open(new File(index)));
+	    searcher = new IndexSearcher(reader);
+	    analyzer = new StandardAnalyzer(Version.LUCENE_48);
 	}
 	
 	public Searcher() throws IOException {
 		this(INDEX);
 	}
 	
-	public static ScoreDoc[] indexSearch(Query query) throws ParseException, IOException {
+	public static ScoreDoc[] indexSearch(Query query) throws IOException {
 	    System.out.println("Searching for: " + query.toString(FIELD));
 	    
-	    TopDocs results = searcher.search(query, 5);
-	    retrievedDocuments = results.scoreDocs;
-	    return retrievedDocuments;
+	    TopDocs results = searcher.search(query, 100);
+	    return results.scoreDocs;
 	}
 	
-	public static ScoreDoc[] expandQuery(Query query) throws IOException, ParseException {
+	public static ScoreDoc[] expandQuery(Query query, ScoreDoc[] retrievedDocuments, String topicNumber, String[] topics) throws IOException, ParseException {
 		ArrayList<ScoreDoc> relDocuments = new ArrayList<ScoreDoc>();
 		ArrayList<ScoreDoc> nonRelDocuments = new ArrayList<ScoreDoc>();
-		splitRetrievedDocuments(relDocuments, nonRelDocuments);
+		splitRetrievedDocuments(retrievedDocuments, topicNumber, topics, relDocuments, nonRelDocuments);
 		Query expandedQuery = Rocchio.RocchioQueryExpander(query, relDocuments, nonRelDocuments, (float) 1, (float) 0.5, (float) 0.5, analyzer, searcher);
-		retrievedDocuments = indexSearch(expandedQuery);
-		return retrievedDocuments;
+		return indexSearch(expandedQuery);
 	}
 	
-	private static void splitRetrievedDocuments(ArrayList<ScoreDoc> relDocuments,
+	private static void splitRetrievedDocuments(ScoreDoc[] retrievedDocuments, String topicNumber, String[] topics, ArrayList<ScoreDoc> relDocuments,
 			ArrayList<ScoreDoc> nonRelDocuments) {
 		
 		for(int i = 0; i < retrievedDocuments.length; i++) {
 			if(topicNumber.equals("")){
-				System.out.println("No topic was selected, use searcher.setTopic()");
+				System.out.println("No topic was selected, use searcher.setTopicNumber()");
 			} else if(topics[i].equals(topicNumber)){
 				relDocuments.add(retrievedDocuments[i]);
 			} else {
@@ -75,10 +66,6 @@ public class Searcher {
 			}
 		}
 		
-	}
-	
-	public void setTopic(String topicNumber) {
-		this.topicNumber = topicNumber;
 	}
 
 	public List<String> toStringList(ScoreDoc[] docs) throws IOException {
