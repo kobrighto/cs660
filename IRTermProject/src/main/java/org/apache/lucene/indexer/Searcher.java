@@ -45,7 +45,7 @@ public class Searcher {
 	    return results.scoreDocs;
 	}
 	
-	public static ScoreDoc[] expandQuery(Query query, ScoreDoc[] retrievedDocuments, String topicNumber, String[] topics) throws IOException, ParseException {
+	public static ScoreDoc[] expandQuery(Query query, ScoreDoc[] retrievedDocuments, String topicNumber, int[] topics) throws IOException, ParseException {
 		ArrayList<ScoreDoc> relDocuments = new ArrayList<ScoreDoc>();
 		ArrayList<ScoreDoc> nonRelDocuments = new ArrayList<ScoreDoc>();
 		splitRetrievedDocuments(retrievedDocuments, topicNumber, topics, relDocuments, nonRelDocuments);
@@ -53,13 +53,13 @@ public class Searcher {
 		return indexSearch(expandedQuery);
 	}
 	
-	private static void splitRetrievedDocuments(ScoreDoc[] retrievedDocuments, String topicNumber, String[] topics, ArrayList<ScoreDoc> relDocuments,
+	private static void splitRetrievedDocuments(ScoreDoc[] retrievedDocuments, String topicNumber, int[] topics, ArrayList<ScoreDoc> relDocuments,
 			ArrayList<ScoreDoc> nonRelDocuments) {
 		
 		for(int i = 0; i < retrievedDocuments.length; i++) {
 			if(topicNumber.equals("")){
 				System.out.println("No topic was selected, use searcher.setTopicNumber()");
-			} else if(topics[i].equals(topicNumber)){
+			} else if(Integer.toString(topics[i]).equals(topicNumber)){
 				relDocuments.add(retrievedDocuments[i]);
 			} else {
 				nonRelDocuments.add(retrievedDocuments[i]);

@@ -16,7 +16,7 @@ public class IndexLDATopics {
 
 	}
 
-	private int[] assignTopicsToDoc(String[] topics, int ndocs) {
+	public static int[] assignTopicsToDoc(int ndocs) {
 		BufferedReader br = null;
 		String sCurrentLine;
 		int[] topicsAssigned = new int[ndocs];
@@ -90,7 +90,7 @@ public class IndexLDATopics {
 		}
 	}
 
-	private String[] loadTopics(int numberOfTopics) {
+	public static String[] loadTopics(int numberOfTopics) {
 		BufferedReader br = null;
 		String topics = "";
 		String[] topicWords = new String[numberOfTopics];
@@ -135,7 +135,7 @@ public class IndexLDATopics {
 	public static void main(String args[]) throws IOException {
 		IndexLDATopics indexLDATopics = new IndexLDATopics();
 		String [] topicWordsArray = indexLDATopics.loadTopics(indexLDATopics.topics);
-		int[] t = indexLDATopics.assignTopicsToDoc(topicWordsArray, indexLDATopics.ndocs);
+		int[] t = indexLDATopics.assignTopicsToDoc(indexLDATopics.ndocs);
 		System.out.println(t[0]);
 	}
 }
