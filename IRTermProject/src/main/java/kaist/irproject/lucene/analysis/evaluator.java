@@ -26,8 +26,8 @@ public class evaluator {
 		File file = new File("evaluation data");
 		int filenumber = file.list().length;
 		if(filenumber != 0) {filenumber = filenumber/2;}
-		String fileName = filenumber + " - " + (new Date()).toString();
-		FileWriter extensionFile = new FileWriter("evaluation data/"+fileName + " - extension.csv");
+		String fileName = Integer.toString(filenumber);
+		FileWriter extensionFile = new FileWriter("evaluation data/"+fileName + "_extension.csv");
 		FileWriter luceneFile = new FileWriter("evaluation data/"+fileName + " - lucene.csv");
 		setRows(extensionFile);
 		setRows(luceneFile);
