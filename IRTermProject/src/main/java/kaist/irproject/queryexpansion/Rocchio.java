@@ -1,6 +1,7 @@
 package kaist.irproject.queryexpansion;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.HashMap;
@@ -26,11 +27,11 @@ import org.apache.lucene.queryparser.classic.ParseException;
  * Utilizing Lucene boosted boolean query as a replacement of the vector space model.
  */
 public class Rocchio {
-	public static Query RocchioQueryExpander(Query query, ScoreDoc[] relDocs, 
-			ScoreDoc[] nonRelDocs, float alpha, float beta, float gamma, Analyzer analyzer, 
+	public static Query RocchioQueryExpander(Query query, ArrayList<ScoreDoc> relDocs, 
+			ArrayList<ScoreDoc> nonRelDocs, float alpha, float beta, float gamma, Analyzer analyzer, 
 			IndexSearcher searcher) throws IOException, ParseException {
-		int Dr = relDocs.length; // number of relevant docs
-		int Dnr = 1; if(nonRelDocs != null) Dnr = nonRelDocs.length; // number of NON relevant docs
+		int Dr = relDocs.size(); // number of relevant docs
+		int Dnr = 1; if(nonRelDocs != null) Dnr = nonRelDocs.size(); // number of NON relevant docs
 
 		
 		String[] queryTerms = query.toString().split(" ");
@@ -62,7 +63,7 @@ public class Rocchio {
 		return Query;
 	}
 
-	private static void updateBoosts(ScoreDoc[] docs, Float param,
+	private static void updateBoosts(ArrayList<ScoreDoc> docs, Float param,
 			Analyzer analyzer, IndexSearcher searcher, int docCount,
 			HashMap<String, Float> terms)
 			throws IOException {

@@ -29,6 +29,10 @@ public class Searcher {
     private static IndexSearcher searcher;
     private static Analyzer analyzer;
     private static QueryParser parser;
+    
+    private static ScoreDoc[] retrievedDocuments = null;
+    private static String[] topics = new String[3];
+    private static String topicNumber = "";
 	
 	public Searcher(String index) throws IOException {
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(new File(index)));
@@ -41,18 +45,42 @@ public class Searcher {
 		this(INDEX);
 	}
 	
-	public static ScoreDoc[] search(Query query) throws ParseException, IOException {
+	public static ScoreDoc[] indexSearch(Query query) throws ParseException, IOException {
 	    System.out.println("Searching for: " + query.toString(FIELD));
 	    
 	    TopDocs results = searcher.search(query, 5);
-	    return results.scoreDocs;
+	    retrievedDocuments = results.scoreDocs;
+	    return retrievedDocuments;
 	}
 	
-	public static ScoreDoc[] expandQuery(Query query, ScoreDoc[] relDocuments, ScoreDoc[] nonRelDocuments) throws IOException, ParseException {
+	public static ScoreDoc[] expandQuery(Query query) throws IOException, ParseException {
+		ArrayList<ScoreDoc> relDocuments = new ArrayList<ScoreDoc>();
+		ArrayList<ScoreDoc> nonRelDocuments = new ArrayList<ScoreDoc>();
+		splitRetrievedDocuments(relDocuments, nonRelDocuments);
 		Query expandedQuery = Rocchio.RocchioQueryExpander(query, relDocuments, nonRelDocuments, (float) 1, (float) 0.5, (float) 0.5, analyzer, searcher);
-		return search(expandedQuery);
+		retrievedDocuments = indexSearch(expandedQuery);
+		return retrievedDocuments;
 	}
 	
+	private static void splitRetrievedDocuments(ArrayList<ScoreDoc> relDocuments,
+			ArrayList<ScoreDoc> nonRelDocuments) {
+		
+		for(int i = 0; i < retrievedDocuments.length; i++) {
+			if(topicNumber.equals("")){
+				System.out.println("No topic was selected, use searcher.setTopic()");
+			} else if(topics[i].equals(topicNumber)){
+				relDocuments.add(retrievedDocuments[i]);
+			} else {
+				nonRelDocuments.add(retrievedDocuments[i]);
+			}
+		}
+		
+	}
+	
+	public void setTopic(String topicNumber) {
+		this.topicNumber = topicNumber;
+	}
+
 	public List<String> toStringList(ScoreDoc[] docs) throws IOException {
 		List<String> docList = new ArrayList<String>();
 		
