@@ -104,7 +104,7 @@ public class IndexLDATopics {
 				//System.out.println(sCurrentLine);
 
 				if (!sCurrentLine.toLowerCase().contains("topic")) {
-					topicWords[topicCount - 1] += sCurrentLine;
+					topicWords[topicCount - 1] += sCurrentLine.trim().split(" ")[0] + " ";
 				} else {
 					topicWords[topicCount] = "";
 					topicCount++;

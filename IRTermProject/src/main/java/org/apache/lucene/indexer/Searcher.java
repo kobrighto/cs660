@@ -49,7 +49,7 @@ public class Searcher {
 		ArrayList<ScoreDoc> relDocuments = new ArrayList<ScoreDoc>();
 		ArrayList<ScoreDoc> nonRelDocuments = new ArrayList<ScoreDoc>();
 		splitRetrievedDocuments(retrievedDocuments, topicNumber, topics, relDocuments, nonRelDocuments);
-		Query expandedQuery = Rocchio.RocchioQueryExpander(query, relDocuments, nonRelDocuments, (float) 1, (float) 0.5, (float) 0.5, analyzer, searcher);
+		Query expandedQuery = Rocchio.RocchioQueryExpander(query, relDocuments, nonRelDocuments, (float) 2, (float) 0.5, (float) 0.1, analyzer, searcher);
 		return indexSearch(expandedQuery);
 	}
 	

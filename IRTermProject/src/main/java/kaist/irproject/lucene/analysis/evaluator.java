@@ -24,9 +24,11 @@ import org.apache.lucene.indexer.IndexLDATopics;
 public class evaluator {
 	public static void main(String args[]) throws FileNotFoundException, IOException, ParseException {
 		File file = new File("evaluation data");
-		String fileName = file.list().length + " - " + (new Date()).toString();
-		FileWriter extensionFile = new FileWriter("evaluation data/"+fileName + " - extension");
-		FileWriter luceneFile = new FileWriter("evaluation data/"+fileName + " - lucene");
+		int filenumber = file.list().length;
+		if(filenumber != 0) {filenumber = filenumber/2;}
+		String fileName = filenumber + " - " + (new Date()).toString();
+		FileWriter extensionFile = new FileWriter("evaluation data/"+fileName + " - extension.csv");
+		FileWriter luceneFile = new FileWriter("evaluation data/"+fileName + " - lucene.csv");
 		setRows(extensionFile);
 		setRows(luceneFile);
 		
@@ -34,7 +36,9 @@ public class evaluator {
 		Searcher searchEngine = new Searcher();
 		
 		ScoreDoc[] retrievedDocs; // INITIALIZE THIS
+		int shortcut = 0;
 		for (Topic topic:topics){
+			if(shortcut == 5){break;}
 			Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48);
 			QueryParser parser = new QueryParser(Version.LUCENE_48, "contents", analyzer);
 			Query query = parser.parse(topic.getQuery().trim());
@@ -52,6 +56,7 @@ public class evaluator {
 			computeAnalysis(extensionFile, topic, searchEngine.toStringList(retrievedDocs));
 			System.out.println();
 			System.out.println();
+			shortcut++;
 		}
 		
 		luceneFile.close();
@@ -81,6 +86,7 @@ public class evaluator {
 		writer.append(Integer.toString(relDocCount));
 		writer.append(',');
 		writer.append(topic.getQuery());
+		writer.append(',');
 		writer.append(Integer.toString(topic.getRelevantDocs().size()));
 		writer.append(',');
 		writer.append(Double.toString(topic.getRelevantDocCount(docs.subList(0, 100))/100.));
