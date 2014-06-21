@@ -31,7 +31,7 @@ public class Searcher {
 	public Searcher(String index) throws IOException {
 		reader = DirectoryReader.open(FSDirectory.open(new File(index)));
 	    searcher = new IndexSearcher(reader);
-	    analyzer = new StandardAnalyzer(Version.LUCENE_48);
+	    analyzer = new StandardAnalyzer(Version.LUCENE_48, IndexerTREC.stopWordsSet);
 	}
 	
 	public Searcher() throws IOException {
@@ -58,7 +58,7 @@ public class Searcher {
 		
 		for(int i = 0; i < retrievedDocuments.length; i++) {
 			if(topicNumber.equals("")){
-				System.out.println("No topic was selected, use searcher.setTopicNumber()");
+				System.out.println("No topic was selected");
 			} else if(Integer.toString(topics[i]).equals(topicNumber)){
 				relDocuments.add(retrievedDocuments[i]);
 			} else {

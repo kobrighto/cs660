@@ -38,11 +38,13 @@ public class evaluator {
 		ScoreDoc[] retrievedDocs; // INITIALIZE THIS
 		int shortcut = 0;
 		for (Topic topic:topics){
-			if(shortcut == 5){break;}
+			//if(shortcut > 5){break;}
 			Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48);
 			QueryParser parser = new QueryParser(Version.LUCENE_48, "contents", analyzer);
 			Query query = parser.parse(topic.getQuery().trim());
 			retrievedDocs = Searcher.indexSearch(query);
+			if (retrievedDocs.length < 50) {continue;}
+			
 			computeAnalysis(luceneFile, topic, searchEngine.toStringList(retrievedDocs));
 			
 			LDA lda = new LDA();
@@ -89,21 +91,15 @@ public class evaluator {
 		writer.append(',');
 		writer.append(Integer.toString(topic.getRelevantDocs().size()));
 		writer.append(',');
-		writer.append(Double.toString(topic.getRelevantDocCount(docs.subList(0, 100))/100.));
+		writer.append(Integer.toString(docs.size()));
 		writer.append(',');
-		writer.append(Double.toString(topic.getRelevantDocCount(docs.subList(0, 20))/20.));
+		writer.append(Integer.toString(topic.getRelevantDocCount(docs.subList(0, Math.min(docs.size(), 100)))));
 		writer.append(',');
-		writer.append(Double.toString(topic.getRelevantDocCount(docs.subList(0, 10))/10.));
+		writer.append(Integer.toString(topic.getRelevantDocCount(docs.subList(0, Math.min(docs.size(), 20)))));
 		writer.append(',');
-		writer.append(Double.toString(topic.getRelevantDocCount(docs.subList(0, 5))/5.));
+		writer.append(Integer.toString(topic.getRelevantDocCount(docs.subList(0, Math.min(docs.size(), 10)))));
 		writer.append(',');
-		writer.append(Double.toString(topic.getRelevantDocCount(docs.subList(0, 100))/(double) relDocCount));
-		writer.append(',');
-		writer.append(Double.toString(topic.getRelevantDocCount(docs.subList(0, 20))/(double) relDocCount));
-		writer.append(',');
-		writer.append(Double.toString(topic.getRelevantDocCount(docs.subList(0, 10))/(double) relDocCount));
-		writer.append(',');
-		writer.append(Double.toString(topic.getRelevantDocCount(docs.subList(0, 5))/(double) relDocCount));
+		writer.append(Integer.toString(topic.getRelevantDocCount(docs.subList(0, Math.min(docs.size(), 5)))));
 		writer.append('\n');
 		
 		
@@ -116,21 +112,15 @@ public class evaluator {
 	    writer.append(',');
 	    writer.append("Relevant Docs");
 	    writer.append(',');
-	    writer.append("Precision @100");
+	    writer.append("Retrieved Docs");
 	    writer.append(',');
-	    writer.append("Precision @20"); 
+	    writer.append("rel @100");
 	    writer.append(',');
-	    writer.append("Precision @10");
+	    writer.append("rel @20"); 
 	    writer.append(',');
-	    writer.append("Precision @5");
+	    writer.append("rel @10");
 	    writer.append(',');
-	    writer.append("Recall @100");
-	    writer.append(',');
-	    writer.append("Recall @20"); 
-	    writer.append(',');
-	    writer.append("Recall @10");
-	    writer.append(',');
-	    writer.append("Recall @5");
+	    writer.append("rel @5");
 	    writer.append('\n');
 	}
 }
