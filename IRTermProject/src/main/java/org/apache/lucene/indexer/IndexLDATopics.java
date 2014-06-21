@@ -6,6 +6,10 @@ import java.io.IOException;
 
 import org.apache.lucene.analysis.Analyzer;
 
+/**
+ * @author Anders
+ *
+ */
 public class IndexLDATopics {
 	private int topics = 20; // default - loadMetaData overwrites
 	private int ndocs = 262; // default - loadMetaData overwrites
@@ -16,6 +20,12 @@ public class IndexLDATopics {
 
 	}
 
+	/**
+	 * Given a number of document, this topics identifies the topics
+	 * for each model based on the LDA model
+	 * @param ndocs
+	 * @return The topics related for each document
+	 */
 	public static int[] assignTopicsToDoc(int ndocs) {
 		BufferedReader br = null;
 		String sCurrentLine;
@@ -64,6 +74,16 @@ public class IndexLDATopics {
 		return topicsAssigned;
 	}
 
+	/**
+	 * Loads meta data from the LDA model
+	 * Example of notation:
+	 * alpha=0.5
+	 * beta=0.1
+	 * ntopics=3
+	 * ndocs=100
+	 * nwords=12977
+	 * liters=999
+	 */
 	private void loadMetaData() {
 		BufferedReader br = null;
 		String sCurrentLine;

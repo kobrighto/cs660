@@ -34,6 +34,12 @@ public class LDA {
 	public static void main(String[] args) {
 		//new LDA().LDAModel();
 	}
+	
+	/**
+	 * Saves input documents in a format that can be read by the LDA model
+	 * @param hits
+	 * @throws IOException
+	 */
 	public void saveDocumentsToFile(ScoreDoc[] hits) throws IOException{
 		String index = "Index_TREC";
 		String field = "contents";
@@ -84,6 +90,11 @@ public class LDA {
 		f.close();
 	}
 
+	/**
+	 * Generates the LDA model using the documents saved
+	 * Uses alpha = 0.5 and beta=0.1
+	 * ntopics = 3 and 5 words pr topic.
+	 */
 	public void LDAModel() {
 
 		// TODO Auto-generated method stub
