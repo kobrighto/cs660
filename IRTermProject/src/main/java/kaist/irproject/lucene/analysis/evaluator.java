@@ -19,7 +19,6 @@ import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.util.Version;
-import org.jsoup.parser.Parser;
 import org.apache.lucene.indexer.IndexLDATopics;
 
 public class evaluator {
