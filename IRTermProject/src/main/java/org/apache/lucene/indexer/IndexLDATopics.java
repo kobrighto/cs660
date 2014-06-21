@@ -12,8 +12,8 @@ public class IndexLDATopics {
 
 	public IndexLDATopics() {
 		 loadMetaData();
-		
-
+		 
+		 assignTopicsToDoc(loadTopics(topics),ndocs);
 	}
 
 	public static int[] assignTopicsToDoc(int ndocs) {
