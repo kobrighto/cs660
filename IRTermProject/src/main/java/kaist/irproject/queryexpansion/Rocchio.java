@@ -27,6 +27,22 @@ import org.apache.lucene.queryparser.classic.ParseException;
  * Utilizing Lucene boosted boolean query as a replacement of the vector space model.
  */
 public class Rocchio {
+	/**
+	 * Query boosting with rocchios algorithm:
+	 * Q[m] = alpha * Q[org] + beta / D[r] * Sum(D[r][j]) + gamma / D[nr] * Sum(D[nr][k])
+	 * 
+	 * @param query
+	 * @param relDocs
+	 * @param nonRelDocs
+	 * @param alpha
+	 * @param beta
+	 * @param gamma
+	 * @param analyzer
+	 * @param searcher
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static Query RocchioQueryExpander(Query query, ArrayList<ScoreDoc> relDocs, 
 			ArrayList<ScoreDoc> nonRelDocs, float alpha, float beta, float gamma, Analyzer analyzer, 
 			IndexSearcher searcher) throws IOException, ParseException {
@@ -42,9 +58,11 @@ public class Rocchio {
 			terms.put(queryTerms[i], new Float(alpha));
 		}
 		
+		// Update HashMap with relevant docs and nonrelevant docs.
 		updateBoosts(relDocs, beta, analyzer, searcher, Dr, terms);
 		updateBoosts(nonRelDocs, -gamma, analyzer, searcher, Dnr, terms);
 		
+		// Sort hashmap by absolute values.
 		ValueComparator bvc =  new ValueComparator(terms);
         TreeMap<String,Float> sorted_map = new TreeMap<String,Float>(bvc);
         sorted_map.putAll(terms);
@@ -52,17 +70,30 @@ public class Rocchio {
 		BooleanQuery Query = new BooleanQuery();
 		
 		int count = 0;
+		// Generate query from the most influential terms. 
 		for(Map.Entry<String, Float> term : sorted_map.entrySet()){
 			// System.out.println(term.getKey() + " " + term.getValue());
 			TermQuery tq = new TermQuery(new Term("contents", term.getKey()));
 			tq.setBoost(term.getValue());
 			Query.add(tq, Occur.SHOULD);
-			count++; if(count == 1023) break;
+			count++; if(count == 1023) break; 	//Lucene.BooleanQuery 
+												//limit of 1024 terms in a query
 		}
 		
 		return Query;
 	}
 
+	/**
+	 * update boosts
+	 * update individual term boost according to the Rocchio algorithm.
+	 * @param docs
+	 * @param param
+	 * @param analyzer
+	 * @param searcher
+	 * @param docCount
+	 * @param terms
+	 * @throws IOException
+	 */
 	private static void updateBoosts(ArrayList<ScoreDoc> docs, Float param,
 			Analyzer analyzer, IndexSearcher searcher, int docCount,
 			HashMap<String, Float> terms)

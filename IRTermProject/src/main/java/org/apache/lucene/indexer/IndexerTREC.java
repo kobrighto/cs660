@@ -34,10 +34,16 @@ import org.apache.lucene.util.Version;
 import org.jsoup.Jsoup;
 
 /**
- * @author Anders
+ * @author Emil
  * 
  */
 public class IndexerTREC {
+	/**
+	 * Indexes the wt10g dataset from the compressed .gz files
+	 * The class goes deep in all underlying folders. 
+	 * @param args
+	 * @throws IOException
+	 */
 	public static void main(String args[]) throws IOException {
 		String INDEXPATH = "Index_TREC";
 		Boolean CREATE = true;
@@ -67,7 +73,14 @@ public class IndexerTREC {
 
 	}
 
-	private static int indexDocs(IndexWriter writer, File file)
+	/**
+	 * Recursive indexing of all sub directories.
+	 * @param writer
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	public static int indexDocs(IndexWriter writer, File file)
 			throws IOException {
 		int docCount = 0;
 		if (file.getName().equals("info")) {
@@ -88,6 +101,16 @@ public class IndexerTREC {
 		return docCount;
 	}
 
+	/**
+	 * index individual docs from a single .gz compressed file
+	 * For each document the fields; contents, indexnumber and 
+	 * docnumber is indexed in lucene.
+	 * HTML-tags are removed using Jsoup parser.
+	 * @param writer
+	 * @param docfile
+	 * @return
+	 * @throws IOException
+	 */
 	private static int indexDoc(IndexWriter writer, File docfile)
 			throws IOException {
 		InputStream fileStream = new FileInputStream(docfile);
@@ -95,16 +118,9 @@ public class IndexerTREC {
 		Reader decoder = new InputStreamReader(gzipStream,
 				StandardCharsets.UTF_8);
 		BufferedReader in = new BufferedReader(decoder);
-		String docFileName = "docs_txt.txt";
-		File file = new File(docFileName);
-		FileWriter filerWriterDocs = new FileWriter(file.getAbsoluteFile(),
-				true);
-		BufferedWriter bufferedWriterDocs = new BufferedWriter(filerWriterDocs);
-		PrintWriter out = new PrintWriter(bufferedWriterDocs);
 
 		String line;
 		int docCount = 1;
-		int intinvalidDocCount = 0;
 		while ((line = in.readLine()) != null) {
 			if (line.equals("<DOC>")) {
 				Document doc = new Document();
@@ -121,65 +137,20 @@ public class IndexerTREC {
 				content = content.substring(content.indexOf("</DOCHDR>"));
 				content = Jsoup.parse(content).text();
 
-				doc.add(new TextField("contents", content, Field.Store.YES)); // Content
-																				// of
-																				// the
-																				// doc
+				doc.add(new TextField("contents", content, Field.Store.YES));
 				doc.add(new TextField("indexnumber",
-						Integer.toString(docCount), Field.Store.YES)); // The
-																		// number
-																		// which
-																		// corresponds
-																		// to
-																		// the
-																		// LDA
-																		// id
+						Integer.toString(docCount), Field.Store.YES));
 
 				if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
 					System.out.println("adding " + docnum);
-					// System.out.println(doc);
 					writer.addDocument(doc);
-					TokenStream tokenStream = writer.getAnalyzer().tokenStream(
-							"contents", doc.get("contents"));
-					CharTermAttribute charTermAttribute = tokenStream
-							.addAttribute(CharTermAttribute.class);
-
-					tokenStream.reset();
-					if (docCount < 5000) { // Only write first 5000 docs
-						int c = 0; // Count number of terms in a document. Used
-									// for debugging purposes
-						String docContent = "";
-						while (tokenStream.incrementToken()) {
-							String term = charTermAttribute.toString();
-							docContent = docContent + " " + term;
-
-							c++;
-						}
-						if (docContent.equals("")) {
-							docContent = "invalid";
-							intinvalidDocCount++;
-						}
-						bufferedWriterDocs.append(docContent.substring(1)
-								+ "\n");
-					}
-					tokenStream.end();
-					tokenStream.close();
-					docCount++; // increases index number
 
 				} else {
 					System.out.println("updating " + docnum);
 					writer.updateDocument(new Term("docnumber", docnum), doc);
 				}
-
 			}
-
 		}
-		bufferedWriterDocs.close();
-		RandomAccessFile f = new RandomAccessFile(new File(docFileName), "rw");
-		f.seek(0); // to the beginning
-		String documentCount = Integer.toString(docCount - 1) + "\n";
-		f.write(documentCount.getBytes());
-		f.close();
 		in.close();
 		return docCount;
 	}
@@ -203,7 +174,7 @@ public class IndexerTREC {
 			"your", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
 			"m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y",
 			"z", "http", "href", "li" , "br" , "page" };
-	static CharArraySet stopWordsSet = new CharArraySet(Version.LUCENE_48,
+	public static CharArraySet stopWordsSet = new CharArraySet(Version.LUCENE_48,
 			Arrays.asList(STOP_WORDS), true);
 
 }

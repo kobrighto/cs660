@@ -3,6 +3,14 @@ package kaist.irproject.lucene.analysis;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Emil Bunk
+ * 
+ * Topic class - describing the elements of one topic from the trec
+ * topics.
+ *
+ */
 public class Topic {
 	private int topicNumber;
 	private String query;

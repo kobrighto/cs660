@@ -20,8 +20,22 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.util.Version;
 import org.apache.lucene.indexer.IndexLDATopics;
-
+/**
+ * 
+ * @author Emil Bunk
+ *
+ */
 public class evaluator {
+	/**
+	 * Runs the search for all predefined queries produced for the Trec dataset
+	 * Having user input for choice of topic and stores performance in 
+	 * CSV files for later analysis
+	 * 
+	 * @param args
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static void main(String args[]) throws FileNotFoundException, IOException, ParseException {
 		File file = new File("evaluation data");
 		int filenumber = file.list().length;
@@ -53,7 +67,7 @@ public class evaluator {
 		    
 		    System.out.println("Current topic: ");
 			System.out.println(topic);
-		    String topicNumber = choseTopic();
+		    String topicNumber = chooseTopic();
 			retrievedDocs = Searcher.expandQuery(query, retrievedDocs, topicNumber, IndexLDATopics.assignTopicsToDoc(100));
 			computeAnalysis(extensionFile, topic, searchEngine.toStringList(retrievedDocs));
 			System.out.println();
@@ -66,8 +80,13 @@ public class evaluator {
 		System.out.println("Evaluation complete.");
 		
 	}
-
-	private static String choseTopic() throws IOException {
+	
+	/**
+	 * Request user input for choice of topic.
+	 * @return
+	 * @throws IOException
+	 */
+	private static String chooseTopic() throws IOException {
 		System.out.println("Choose between these topics:");
 		String[] topics = IndexLDATopics.loadTopics(3);
 		for(int i=0; i<3; i++){
@@ -81,18 +100,34 @@ public class evaluator {
 	   	return topicNumber.trim();
 		
 	}
-
+	
+	/**
+	 * Write performance to CSV file.
+	 * @param writer
+	 * @param topic
+	 * @param docs
+	 * @throws IOException
+	 */
 	private static void computeAnalysis(FileWriter writer, Topic topic,
 			List<String> docs) throws IOException {
-		int relDocCount = topic.getTopicNumber();
-		writer.append(Integer.toString(relDocCount));
+		// Topic number
+		writer.append(Integer.toString(topic.getTopicNumber()));
 		writer.append(',');
+		
+		// Topic title/query
 		writer.append(topic.getQuery());
 		writer.append(',');
+		
+		// Number of relevant docs in the full set
 		writer.append(Integer.toString(topic.getRelevantDocs().size()));
 		writer.append(',');
+		
+		// Number of retrieved documents from search
 		writer.append(Integer.toString(docs.size()));
 		writer.append(',');
+		
+		// Number of relevant documents in the retrieved set
+		// At first 100, 20, 10 and 5 retrieved documents.
 		writer.append(Integer.toString(topic.getRelevantDocCount(docs.subList(0, Math.min(docs.size(), 100)))));
 		writer.append(',');
 		writer.append(Integer.toString(topic.getRelevantDocCount(docs.subList(0, Math.min(docs.size(), 20)))));

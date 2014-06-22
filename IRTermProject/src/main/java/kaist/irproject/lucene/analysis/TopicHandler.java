@@ -6,6 +6,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
 
+/**
+ * 
+ * @author Emil Bunk
+ *
+ *
+ *	Extract topics and relevant document information.
+ *	Providing an easy access to the individual topics for evaluation needs.
+ */
 public class TopicHandler {
 		
 		private static Topic[] topics;

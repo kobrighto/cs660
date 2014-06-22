@@ -20,6 +20,12 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
 
+/**
+ * 
+ * @author Emil Bunk
+ *
+ *
+ */
 public class Searcher {
 		private static final String FIELD = "contents";
 		private static final String INDEX = "Index_TREC";
@@ -28,6 +34,11 @@ public class Searcher {
 	    private static IndexSearcher searcher;
 	    private static Analyzer analyzer;
 		
+	    /**
+	     * The searcher class handles searching in the indexed data using the Lucene software.
+	     * @param index
+	     * @throws IOException
+	     */
 	public Searcher(String index) throws IOException {
 		reader = DirectoryReader.open(FSDirectory.open(new File(index)));
 	    searcher = new IndexSearcher(reader);
@@ -38,6 +49,12 @@ public class Searcher {
 		this(INDEX);
 	}
 	
+	/**
+	 * Performe a IndexSearch in the database.
+	 * @param query
+	 * @return
+	 * @throws IOException
+	 */
 	public static ScoreDoc[] indexSearch(Query query) throws IOException {
 	    System.out.println("Searching for: " + query.toString(FIELD));
 	    
@@ -45,6 +62,16 @@ public class Searcher {
 	    return results.scoreDocs;
 	}
 	
+	/**
+	 * Expand search query using topic choice.
+	 * @param query
+	 * @param retrievedDocuments
+	 * @param topicNumber
+	 * @param topics
+	 * @return
+	 * @throws IOException
+	 * @throws ParseException
+	 */
 	public static ScoreDoc[] expandQuery(Query query, ScoreDoc[] retrievedDocuments, String topicNumber, int[] topics) throws IOException, ParseException {
 		ArrayList<ScoreDoc> relDocuments = new ArrayList<ScoreDoc>();
 		ArrayList<ScoreDoc> nonRelDocuments = new ArrayList<ScoreDoc>();
@@ -53,6 +80,14 @@ public class Searcher {
 		return indexSearch(expandedQuery);
 	}
 	
+	/**
+	 * Split documents in a relevant and non-relevant set from topic classification info.
+	 * @param retrievedDocuments
+	 * @param topicNumber
+	 * @param topics
+	 * @param relDocuments
+	 * @param nonRelDocuments
+	 */
 	private static void splitRetrievedDocuments(ScoreDoc[] retrievedDocuments, String topicNumber, int[] topics, ArrayList<ScoreDoc> relDocuments,
 			ArrayList<ScoreDoc> nonRelDocuments) {
 		
@@ -68,6 +103,13 @@ public class Searcher {
 		
 	}
 
+	/**
+	 * produce a list of strings with the unique identifier 
+	 * for each document in the input array.
+	 * @param docs
+	 * @return
+	 * @throws IOException
+	 */
 	public List<String> toStringList(ScoreDoc[] docs) throws IOException {
 		List<String> docList = new ArrayList<String>();
 		
